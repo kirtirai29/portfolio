@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kirti Rai | Senior Backend Engineer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Modern Dark Gradient Theme Variables (Default) */
+        :root {
+            --bg-main: #0f172a; 
+            --bg-card: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --gradient-primary: linear-gradient(135deg, #00f2fe 0%, #4facfe 50%, #8b5cf6 100%);
+            --gradient-hover: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
+            --card-border: rgba(255, 255, 255, 0.05);
+            --accent: #4facfe;
+            --nav-bg: rgba(15, 23, 42, 0.85);
+            --section-alt: rgba(30, 41, 59, 0.3);
+            --input-bg: #0d1117;
+            --input-border: #30363d;
+        }
+
+        /* Light Mode Variables Overrides */
+        body.light-mode {
+            --bg-main: #f8fafc; 
+            --bg-card: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --card-border: rgba(0, 0, 0, 0.1);
+            --nav-bg: rgba(255, 255, 255, 0.85);
+            --section-alt: #f1f5f9;
+            --input-bg: #ffffff;
+            --input-border: #cbd5e1;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        
+        /* Added transition to body for smooth theme switching */
+        body { 
+            background-color: var(--bg-main); color: var(--text-main); line-height: 1.6; 
+            scroll-behavior: smooth; overflow-x: hidden;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+        
+        .text-gradient {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Navigation */
+        nav { 
+            background: var(--nav-bg); backdrop-filter: blur(12px);
+            padding: 1.2rem 5%; display: flex; justify-content: space-between; align-items: center; 
+            position: fixed; width: 100%; top: 0; z-index: 1000; border-bottom: 1px solid var(--card-border);
+            transition: background-color 0.4s ease;
+        }
+        nav .logo { font-size: 1.8rem; font-weight: 800; letter-spacing: -0.5px; }
+        nav ul { list-style: none; display: flex; gap: 2rem; align-items: center; }
+        nav ul li a { text-decoration: none; color: var(--text-main); font-weight: 600; transition: color 0.3s; position: relative; font-size: 0.9rem; }
+        nav ul li a:hover { color: var(--accent); }
+
+        /* Theme Toggle Button */
+        .theme-btn {
+            background: transparent; border: none; font-size: 1.3rem; cursor: pointer;
+            color: var(--text-main); transition: transform 0.3s ease; display: flex; align-items: center;
+        }
+        .theme-btn:hover { transform: scale(1.15) rotate(15deg); }
+
+        /* Hero Section */
+        .hero { 
+            min-height: 100vh; display: flex; align-items: center; justify-content: center; 
+            text-align: center; padding: 8rem 5% 2rem; position: relative;
+            background: radial-gradient(circle at top, rgba(139, 92, 246, 0.15) 0%, transparent 40%),
+                        radial-gradient(circle at bottom, rgba(79, 172, 254, 0.1) 0%, transparent 40%);
+        }
+        .hero-content { max-width: 900px; z-index: 2; }
+        
+        .profile-pic-container {
+            position: relative; width: 190px; height: 190px; margin: 0 auto 2.5rem;
+            border-radius: 50%; padding: 4px; background: var(--gradient-primary);
+            box-shadow: 0 0 30px rgba(79, 172, 254, 0.4); transition: transform 0.5s ease;
+        }
+        .profile-pic-container:hover { transform: scale(1.08) translateY(-5px); box-shadow: 0 0 50px rgba(139, 92, 246, 0.6); }
+        .profile-pic { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 4px solid var(--bg-main); transition: border-color 0.4s ease; }
+        
+        .hero h1 { font-size: 4.5rem; margin-bottom: 0.5rem; font-weight: 800; letter-spacing: -1.5px; }
+        
+        .typing-container { font-size: 1.8rem; font-weight: 600; margin-bottom: 1.5rem; min-height: 42px; color: var(--accent); }
+        .typed-text { border-right: 3px solid #8b5cf6; padding-right: 5px; animation: blinkCursor 0.75s step-end infinite; }
+        @keyframes blinkCursor { from, to { border-color: transparent } 50% { border-color: #8b5cf6; } }
+        
+        .hero p { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 2.5rem; max-width: 750px; margin-left: auto; margin-right: auto; line-height: 1.8; }
+        
+        .btn-group { display: flex; gap: 1.5rem; justify-content: center; margin-bottom: 3rem; flex-wrap: wrap; }
+        
+        .btn { 
+            display: inline-block; padding: 1rem 2.5rem; background: var(--gradient-primary); 
+            color: #ffffff; text-decoration: none; border-radius: 50px; /* Kept text white for contrast on gradients */
+            font-weight: 700; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem;
+            box-shadow: 0 10px 20px rgba(79, 172, 254, 0.3); border: none; cursor: pointer;
+        }
+        .btn:hover { background: var(--gradient-hover); transform: translateY(-3px); box-shadow: 0 15px 30px rgba(139, 92, 246, 0.5); }
+        
+        .btn-outline {
+            background: transparent; border: 2px solid var(--accent); color: var(--accent); box-shadow: none;
+        }
+        .btn-outline:hover { background: rgba(79, 172, 254, 0.1); box-shadow: 0 10px 20px rgba(79, 172, 254, 0.2); }
+
+        /* API Window - Hardcoded dark to keep the terminal look even in light mode */
+        .api-window {
+            background: #0d1117; border-radius: 12px; max-width: 700px; margin: 0 auto;
+            text-align: left; box-shadow: 0 25px 50px rgba(0,0,0,0.3); overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1); position: relative;
+        }
+        .api-header { background: #161b22; padding: 12px 20px; display: flex; align-items: center; border-bottom: 1px solid #30363d; color: #8b949e; font-family: 'Fira Code', monospace; font-size: 0.85rem; }
+        .api-dots { display: flex; gap: 8px; margin-right: 20px; }
+        .api-dots span { width: 12px; height: 12px; border-radius: 50%; }
+        .api-dots span:nth-child(1) { background: #ff5f56; }
+        .api-dots span:nth-child(2) { background: #ffbd2e; }
+        .api-dots span:nth-child(3) { background: #27c93f; }
+        .api-body { padding: 1.8rem; font-family: 'Fira Code', monospace; font-size: 1rem; line-height: 1.6; color: #e6edf3; overflow-x: auto; }
+        .json-key { color: #79c0ff; }
+        .json-string { color: #a5d6ff; }
+        .json-number { color: #d2a8ff; }
+
+        /* Shared Section Styles */
+        section { padding: 7rem 5%; }
+        .section-alt { background: var(--section-alt); transition: background-color 0.4s ease; }
+        .section-title { text-align: center; font-size: 2.8rem; margin-bottom: 4rem; font-weight: 800; letter-spacing: -1px; }
+        .hidden { opacity: 0; transform: translateY(40px); transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+        .show { opacity: 1; transform: translateY(0); }
+
+        /* Timeline / Experience Section */
+        .timeline-container { max-width: 900px; margin: 0 auto; padding-left: 20px; border-left: 3px solid var(--accent); position: relative; }
+        .timeline-item { position: relative; padding-left: 2.5rem; margin-bottom: 3.5rem; }
+        .timeline-item::before {
+            content: ''; position: absolute; left: -26px; top: 0; width: 16px; height: 16px;
+            background: var(--bg-main); border: 4px solid var(--accent); border-radius: 50%;
+            box-shadow: 0 0 15px rgba(79, 172, 254, 0.6); transition: background-color 0.4s ease;
+        }
+        .timeline-item h3 { font-size: 1.6rem; color: var(--text-main); margin-bottom: 0.3rem; }
+        .timeline-item h4 { font-size: 1.1rem; color: #8b5cf6; margin-bottom: 0.8rem; font-weight: 600; }
+        .timeline-item .date { display: inline-block; padding: 0.3rem 1rem; background: rgba(79, 172, 254, 0.1); color: var(--accent); border-radius: 50px; font-size: 0.85rem; font-weight: 700; margin-bottom: 1.2rem; }
+        .timeline-item p { color: var(--text-muted); line-height: 1.7; font-size: 1.05rem; }
+        .timeline-item ul { margin-top: 1rem; padding-left: 1.5rem; color: var(--text-muted); }
+        .timeline-item ul li { margin-bottom: 0.5rem; }
+
+        /* Skills Section */
+        .skills-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 1.2rem; max-width: 950px; margin: 0 auto; }
+        .skill-tag { 
+            background: var(--bg-card); color: var(--text-main); padding: 1rem 2rem; 
+            border-radius: 12px; font-weight: 600; border: 1px solid var(--card-border);
+            transition: all 0.3s ease; cursor: default; position: relative; overflow: hidden;
+        }
+        .skill-tag::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--gradient-primary); opacity: 0; transition: opacity 0.3s ease; z-index: 0; }
+        .skill-tag span { position: relative; z-index: 1; }
+        .skill-tag:hover::before { opacity: 1; }
+        .skill-tag:hover { transform: translateY(-5px); border-color: transparent; box-shadow: 0 10px 20px rgba(0,0,0,0.1); color: #fff;} /* Keep text white on hover */
+
+        /* GitHub & Projects */
+        .github-container { max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; gap: 2rem; }
+        .github-card { background: var(--bg-card); padding: 2.5rem; border-radius: 20px; border: 1px solid var(--card-border); box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: all 0.4s ease; text-align: center; }
+        .github-card:hover { transform: translateY(-5px); }
+        .github-stats-grid { display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: center; align-items: center; }
+        .github-stats-grid img { max-width: 100%; border-radius: 10px; transition: transform 0.3s ease; border: 1px solid var(--card-border); }
+        .github-stats-grid img:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2.5rem; max-width: 1100px; margin: 0 auto; }
+        .project-card { background: var(--bg-card); padding: 3rem 2.5rem; border-radius: 20px; border: 1px solid var(--card-border); transition: all 0.4s ease; position: relative; z-index: 1; }
+        .project-card::before { content: ''; position: absolute; inset: -2px; border-radius: 22px; z-index: -1; background: var(--gradient-primary); opacity: 0; transition: opacity 0.4s ease; }
+        .project-card:hover::before { opacity: 1; }
+        .project-card:hover { transform: translateY(-10px); }
+        .project-card h3 { margin-bottom: 1rem; font-size: 1.5rem; font-weight: 700; }
+        .project-card p { color: var(--text-muted); margin-bottom: 2.5rem; line-height: 1.7; }
+
+        /* Form */
+        .form-input { 
+            width: 100%; padding: 0.8rem 1rem; background: var(--input-bg); 
+            border: 1px solid var(--input-border); border-radius: 8px; color: var(--text-main); 
+            font-family: 'Inter', sans-serif; outline: none; transition: all 0.3s ease; 
+        }
+        .form-input:focus { border-color: var(--accent); box-shadow: 0 0 10px rgba(79, 172, 254, 0.2); }
+        .form-label { display: block; margin-bottom: 0.5rem; color: var(--text-muted); font-size: 0.9rem; font-weight: 600; }
+
+        /* Architecture Modal Styles */
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); backdrop-filter: blur(5px); opacity: 0; transition: opacity 0.3s ease; }
+        .modal.show-modal { opacity: 1; }
+        .modal-content { background-color: var(--bg-card); margin: 5% auto; padding: 2.5rem; border: 1px solid var(--accent); border-radius: 16px; width: 90%; max-width: 900px; position: relative; box-shadow: 0 25px 50px rgba(0,0,0,0.5); transform: translateY(-20px); transition: transform 0.3s ease; }
+        .modal.show-modal .modal-content { transform: translateY(0); }
+        .close-btn { color: var(--text-muted); position: absolute; top: 1.5rem; right: 2rem; font-size: 2rem; font-weight: bold; cursor: pointer; transition: color 0.3s; }
+        .close-btn:hover { color: var(--text-main); }
+        .arch-image { width: 100%; border-radius: 8px; border: 1px solid var(--card-border); margin-top: 1rem; }
+
+        footer { background: var(--bg-card); text-align: center; padding: 4rem 5% 3rem; border-top: 1px solid var(--card-border); transition: background-color 0.4s ease;}
+        footer a { color: var(--text-muted); text-decoration: none; margin: 0 1rem; font-weight: 600; transition: all 0.3s; font-size: 1.1rem; }
+        footer a:hover { color: var(--accent); text-shadow: 0 0 15px rgba(79, 172, 254, 0.4); }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 3rem; }
+            nav ul { display: none; }
+            .hero { padding-top: 8rem; }
+            .btn-group { flex-direction: column; gap: 1rem; padding: 0 2rem; }
+            .modal-content { margin: 15% auto; padding: 1.5rem; }
+            /* Show toggle on mobile even if links are hidden */
+            nav .theme-btn { display: block; position: absolute; right: 5%; top: 1.5rem;}
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo text-gradient">KR.</div>
+        <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#github">Activity</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><button class="theme-btn" id="theme-toggle" title="Toggle Light/Dark Mode">☀️</button></li>
+        </ul>
+        <button class="theme-btn" id="theme-toggle-mobile" style="display: none;">☀️</button>
+    </nav>
+
+    <header class="hero" id="about">
+        <div class="hero-content">
+            <div class="profile-pic-container hidden">
+                <img src="profile.jpg" alt="Kirti Rai" class="profile-pic">
+            </div>
+            
+            <h1 class="hidden" style="transition-delay: 100ms;">Hi, I'm <span class="text-gradient">Kirti Rai</span></h1>
+            
+            <div class="typing-container hidden" style="transition-delay: 200ms;">
+                <span class="typed-text"></span>
+            </div>
+
+            <p class="hidden" style="transition-delay: 300ms;">
+                Senior Backend Engineer with 3+ years designing distributed systems in Java, Spring Boot, and Apache Kafka. Based in Pune, India, I specialize in building high-availability event-driven architectures and processing millions of daily transactions.
+            </p>
+            
+            <div class="btn-group hidden" style="transition-delay: 400ms;">
+                <a href="#projects" class="btn">Explore My Work</a>
+                <a href="KIRTI_RAI_INFO.pdf" download class="btn btn-outline">Download Resume</a>
+            </div>
+
+            <div class="api-window hidden" style="transition-delay: 600ms;">
+                <div class="api-header">
+                    <div class="api-dots"><span></span><span></span><span></span></div>
+                    GET /api/v1/profile/kirti-rai
+                </div>
+                <div class="api-body">
+<pre><code>{
+  <span class="json-key">"name"</span>: <span class="json-string">"Kirti Rai"</span>,
+  <span class="json-key">"title"</span>: <span class="json-string">"Senior Backend Engineer"</span>,
+  <span class="json-key">"company"</span>: <span class="json-string">"HSBC"</span>,
+  <span class="json-key">"experience_years"</span>: <span class="json-number">3.5</span>,
+  <span class="json-key">"core_stack"</span>: [<span class="json-string">"Java"</span>, <span class="json-string">"Spring Boot"</span>, <span class="json-string">"Apache Kafka"</span>],
+  <span class="json-key">"awards"</span>: [<span class="json-string">"INSPIRE Scholar"</span>, <span class="json-string">"L'Oréal India Scholar"</span>],
+  <span class="json-key">"hireable"</span>: <span class="json-boolean">true</span>
+}</code></pre>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="experience" class="section-alt">
+        <h2 class="section-title hidden">Professional <span class="text-gradient">Journey</span></h2>
+        
+        <div class="timeline-container">
+            <div class="timeline-item hidden">
+                <h3>Senior Software Engineer <span class="text-gradient">@ HSBC</span></h3>
+                <h4>Pune, Maharashtra, India</h4>
+                <span class="date">July 2025 - Present</span>
+                <ul>
+                    <li>Architect enterprise Java/Spring Boot services for a high-availability payments platform processing 5M+ transactions/day at 99.9%+ uptime.</li>
+                    <li>Designed Kafka event-driven microservices improving end-to-end throughput by 35% and fully decoupling asynchronous workflows.</li>
+                    <li>Led system design reviews enforcing clean architecture that reduced post-release defects by 40%.</li>
+                    <li>Profiled bottlenecks and tuned DB queries to achieve 30%+ P99 latency reduction with zero unplanned downtime.</li>
+                </ul>
+            </div>
+
+            <div class="timeline-item hidden">
+                <h3>Software Engineer <span class="text-gradient">@ HSBC</span></h3>
+                <span class="date">Feb 2024 - July 2025</span>
+                <ul>
+                    <li>Delivered 8+ backend features end-to-end in Agile sprints using Spring Boot and Kafka.</li>
+                    <li>Revamped Jenkins CI/CD pipelines and introduced structured logging, reducing MTTR by 25%.</li>
+                    <li>Conducted 50+ code reviews coaching junior engineers on SOLID principles and microservices best practices.</li>
+                </ul>
+            </div>
+
+            <div class="timeline-item hidden">
+                <h3>Programmer Analyst <span class="text-gradient">@ Cognizant</span></h3>
+                <h4>Noida, India</h4>
+                <span class="date">Nov 2022 - July 2023</span>
+                <ul>
+                    <li>Built and maintained enterprise Java applications end-to-end across full SDLC supporting 3 concurrent client projects.</li>
+                    <li>Gained hands-on cloud deployment and integration experience as CIM Cloud Developer on distributed infrastructure.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills">
+        <h2 class="section-title hidden">Technical <span class="text-gradient">Expertise</span></h2>
+        <div class="skills-container">
+            <div class="skill-tag hidden"><span>Java (Advanced)</span></div>
+            <div class="skill-tag hidden"><span>Spring Boot & MVC</span></div>
+            <div class="skill-tag hidden"><span>Apache Kafka</span></div>
+            <div class="skill-tag hidden"><span>Microservices</span></div>
+            <div class="skill-tag hidden"><span>Hibernate/JPA</span></div>
+            <div class="skill-tag hidden"><span>SQL & Bash</span></div>
+            <div class="skill-tag hidden"><span>Docker & Jenkins CI/CD</span></div>
+            <div class="skill-tag hidden"><span>Event-Driven Design</span></div>
+            <div class="skill-tag hidden"><span>RESTful APIs</span></div>
+        </div>
+    </section>
+
+    <section id="github" class="section-alt">
+        <h2 class="section-title hidden">Open Source <span class="text-gradient">Activity</span></h2>
+        <div class="github-container">
+            <div class="github-card hidden">
+                <h3 style="margin-bottom: 1.5rem; font-size: 1.3rem; color: var(--text-muted);">Real-Time Contribution Calendar</h3>
+                <img src="https://ghchart.rshah.org/4facfe/kirtirai29" alt="GitHub Contribution Chart" style="width: 100%; opacity: 0.9;">
+            </div>
+            <div class="github-stats-grid hidden">
+                <img src="https://github-readme-stats.vercel.app/api?username=kirtirai29&show_icons=true&theme=tokyonight&hide_border=true&bg_color=1e293b" alt="GitHub Stats">
+                <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=kirtirai29&layout=compact&theme=tokyonight&hide_border=true&bg_color=1e293b" alt="Top Languages">
+            </div>
+        </div>
+    </section>
+
+    <section id="projects">
+        <h2 class="section-title hidden">Featured <span class="text-gradient">Projects</span></h2>
+        <div class="projects-grid">
+            <div class="project-card hidden">
+                <h3 class="text-gradient">NiDar Women Safety Application</h3>
+                <span style="color: var(--accent); font-size: 0.85rem; font-weight: 700; display: block; margin-bottom: 1rem;">Published Research | 2022-2023</span>
+                <p>Designed a production-grade real-time safety mobile app featuring SOS alerts, live GPS tracking, and multi-contact notifications. Engineered the full backend pipeline including REST APIs and real-time event processing. Authored a peer-reviewed research paper documenting system architecture and scalability.</p>
+                <a href="https://www.doi.org/10.56726/IRJMETS33081" class="btn btn-outline" style="padding: 0.5rem 1.2rem; font-size: 0.8rem;">View Research</a>
+            </div>
+            <div class="project-card hidden">
+                <h3 class="text-gradient">Bhojan Backend System</h3>
+                <p>A highly scalable backend application designed to handle complex data flows. Engineered using Java, Maven, and Spring Boot with a strict focus on clean architecture and efficient REST API design.</p>
+                <button onclick="openArchModal()" class="btn btn-outline" style="padding: 0.5rem 1.2rem; font-size: 0.8rem; cursor: pointer;">View Architecture</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="section-alt">
+        <h2 class="section-title hidden">Get In <span class="text-gradient">Touch</span></h2>
+        <div class="hidden" style="max-width: 600px; margin: 0 auto; background: var(--bg-card); padding: 3rem; border-radius: 20px; border: 1px solid var(--card-border); box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: background-color 0.4s ease;">
+            <form action="https://api.web3forms.com/submit" method="POST">
+                <input type="hidden" name="access_key" value="afb4e35b-6002-45d0-850b-3d54e5d8e6f3">
+                <div style="margin-bottom: 1.5rem;">
+                    <label class="form-label">Name</label>
+                    <input type="text" name="name" required class="form-input">
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" required class="form-input">
+                </div>
+                <div style="margin-bottom: 2.5rem;">
+                    <label class="form-label">Message</label>
+                    <textarea name="message" rows="5" required class="form-input" style="resize: vertical;"></textarea>
+                </div>
+                <input type="checkbox" name="botcheck" style="display: none;">
+                <button type="submit" class="btn" style="width: 100%; text-align: center;">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <h3 class="hidden">Let's <span class="text-gradient">Connect</span></h3>
+        <div class="hidden">
+            <a href="https://linkedin.com/in/kirti-rai" target="_blank">LinkedIn</a>
+            <a href="https://github.com/kirtirai29" target="_blank">GitHub</a>
+        </div>
+        <p style="margin-top: 3rem; font-size: 0.85rem; color: #64748b;">&copy; 2026 Kirti Rai. Engineered from scratch.</p>
+    </footer>
+
+    <div id="archModal" class="modal" onclick="closeIfOutside(event)">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeArchModal()">&times;</span>
+            <h3 style="font-size: 1.8rem; margin-bottom: 0.5rem; color: var(--text-main);">Bhojan <span class="text-gradient">System Architecture</span></h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">High-level overview of the backend data flow, APIs, and services.</p>
+            <img src="bhojan-architecture.png" alt="Bhojan Architecture Diagram" class="arch-image">
+        </div>
+    </div>
+
+    <script>
+        // --- THEME TOGGLE LOGIC ---
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeToggleMobile = document.getElementById('theme-toggle-mobile');
+        const body = document.body;
+        
+        // 1. Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            body.classList.add('light-mode');
+            themeToggle.textContent = '🌙';
+            themeToggleMobile.textContent = '🌙';
+        }
+
+        // 2. Handle theme toggle click
+        function toggleTheme() {
+            body.classList.toggle('light-mode');
+            const isLightMode = body.classList.contains('light-mode');
+            
+            // Save to localStorage
+            localStorage.setItem('theme', isLightMode ? 'light' : 'dark');
+            
+            // Update icons
+            themeToggle.textContent = isLightMode ? '🌙' : '☀️';
+            themeToggleMobile.textContent = isLightMode ? '🌙' : '☀️';
+        }
+
+        themeToggle.addEventListener('click', toggleTheme);
+        themeToggleMobile.addEventListener('click', toggleTheme);
+
+        // Make sure mobile toggle shows up if nav is hidden by CSS media query
+        if(window.innerWidth <= 768) {
+             themeToggleMobile.style.display = "block";
+             themeToggleMobile.style.position = "absolute";
+             themeToggleMobile.style.right = "5%";
+             themeToggleMobile.style.top = "1.5rem";
+        }
+
+
+        // --- TYPING EFFECT ---
+        const textArray = ["Senior Backend Engineer.", "Java & Kafka Architect.", "Distributed Systems Builder.", "Event-Driven Microservices."];
+        let textIndex = 0;
+        let charIndex = 0;
+        const typedTextSpan = document.querySelector(".typed-text");
+
+        function type() {
+            if (charIndex < textArray[textIndex].length) {
+                typedTextSpan.textContent += textArray[textIndex].charAt(charIndex);
+                charIndex++;
+                setTimeout(type, 70); 
+            } else {
+                setTimeout(erase, 2500); 
+            }
+        }
+
+        function erase() {
+            if (charIndex > 0) {
+                typedTextSpan.textContent = textArray[textIndex].substring(0, charIndex - 1);
+                charIndex--;
+                setTimeout(erase, 35); 
+            } else {
+                textIndex++;
+                if (textIndex >= textArray.length) textIndex = 0;
+                setTimeout(type, 500); 
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            setTimeout(type, 1000); 
+        });
+
+        // --- SCROLL OBSERVERS ---
+        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                    observer.unobserve(entry.target); 
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.hidden').forEach((element) => {
+            observer.observe(element);
+        });
+
+        // --- MODAL LOGIC ---
+        const modal = document.getElementById("archModal");
+        
+        function openArchModal() {
+            modal.style.display = "block";
+            setTimeout(() => { modal.classList.add("show-modal"); }, 10);
+            document.body.style.overflow = "hidden"; 
+        }
+
+        function closeArchModal() {
+            modal.classList.remove("show-modal");
+            setTimeout(() => { modal.style.display = "none"; }, 300); 
+            document.body.style.overflow = "auto";
+        }
+
+        function closeIfOutside(event) {
+            if (event.target === modal) closeArchModal();
+        }
+    </script>
+</body>
+</html>
